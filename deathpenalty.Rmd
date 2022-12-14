@@ -1,0 +1,46 @@
+---
+title: "deathpenalty"
+author: "chase mayfield"
+date: "12/14/2022"
+output: html_document
+---
+
+```{r}
+library(rstan)
+library(bayesplot)
+library(ggplot2)
+```
+
+```{r}
+setwd("C:/Users/15307/Downloads")
+```
+
+```{r}
+crime<-read.csv("C:/Users/15307/Downloads/crime_punishment.csv",header=TRUE)
+View(crime)
+qplot(crime$car, crime$murder)
+```
+
+```{r}
+C<-crime$car
+P<-crime$law
+N<-length(crime$X)
+Y<-crime$murder
+dataList<-list(C=C,P=P,N=N,Y=Y)
+fit<-stan('C:/Users/15307/OneDrive/Documents/deathpenaltypooled.stan',iter=1000,chains=4,data=dataList,seed=1)
+print(fit)
+```
+
+
+```{r}
+Z<-length(unique(crime$state))
+S<-crime$state
+C<-crime$car
+P<-crime$law
+N<-length(crime$X)
+Y<-crime$murder
+dataList<-list(C=C,P=P,N=N,Y=Y,S=S,Z=Z)
+fit<-stan('C:/Users/15307/Downloads/deathpenaltyhiar.stan',iter=1000,chains=4,data=dataList,seed=1)
+print(fit)
+```
+

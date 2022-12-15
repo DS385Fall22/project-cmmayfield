@@ -47,3 +47,9 @@ model {
   gamma ~ normal(0,1);
   gamma_bar ~ normal(0,1);
 }
+generated quantities {
+  vector[N] y_ppc; 
+  for(i in 1:N){
+  y_ppc[i]=normal_rng(alpha[S[i]] + beta[S[i]]*P[i] + gamma[S[i]]*C[i],sigma_b[S[i]]);
+}
+}
